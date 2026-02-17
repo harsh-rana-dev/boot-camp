@@ -1,6 +1,4 @@
 SELECT id,
-       user_name,
-       SUM(amount) AS total_amount
+       SUM(amount) AS total
 FROM profile
-WHERE amount > 0
-GROUP BY id, user_name;
+GROUP BY id;

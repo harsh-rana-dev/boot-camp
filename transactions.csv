@@ -1,0 +1,6 @@
+user_id,amount,currency,status
+101,250,USD,completed
+102,-50,USD,completed
+103,abc,USD,failed
+104,300,EUR,completed
+105,500,,completed

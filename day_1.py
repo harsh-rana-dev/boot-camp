@@ -1,38 +1,72 @@
-from typing import List, Dict
+from typing import Dict, List
 
-def clean_transactions(transactions: List[Dict]) -> List[Dict]:
 
-    if not isinstance(transactions, list):
-        raise TypeError("transaction must be a list")
+def validate(users: List[Dict]) -> List[Dict]:
+    valid_users: List[Dict] = []
 
-    cleaned = []
+    for user in users:
+        user_id = user.get("id")
+        email = user.get("email")
+        age = user.get("age")
 
-    for tx in transactions:
-        if not isinstance(tx, dict):
+        if not isinstance(user_id, int) or user_id <= 0:
             continue
 
-        user_id = tx.get("user_id")
-        amount = tx.get("amount")
-        currency = tx.get("currency")
-
-
-        if user_id is None or currency is None:
-
-            continue        
-    
-        try:
-            amount = float(amount)
-        except (ValueError, TypeError):
+        if not isinstance(email, str) or not email.strip():
             continue
 
-        if amount < 0:
+        if not isinstance(age, int) or age < 0 or age > 120:
             continue
 
+        valid_users.append(user)
 
-        cleaned.append({
-            "user_id": user_id,
-            "amount": amount,
-            "currency": currency
-        })
+    return valid_users
 
-    return cleaned
+
+def validate_users_split(users: List[Dict]) -> Dict[str, List[Dict]]:
+
+    result = {
+        "valid": [],
+        "invalid": []
+    }
+
+    for user in users:
+        user_id = user.get("id")
+        email = user.get("email")
+        age = user.get("age")
+
+        is_valid = True
+
+        if not isinstance(user_id, int) or user_id <= 0:
+            is_valid = False
+
+        if not isinstance(email, str) or not email.strip():
+            is_valid = False
+
+        if not isinstance(age, int) or age < 0 or age > 120:
+            is_valid = False
+
+        if is_valid:
+            result["valid"].append(user)
+        else:
+            result["invalid"].append(user)
+
+    return result
+
+
+def summarize_users(valid_users: List[Dict]) -> Dict:
+
+    total_valid = len(valid_users)
+
+    if total_valid == 0:
+        return {
+            "total_valid": 0,
+            "average_age": 0
+        }
+
+    total_age = sum(user["age"] for user in valid_users)
+
+    return {
+        "total_valid": total_valid,
+        "average_age": total_age / total_valid
+    }

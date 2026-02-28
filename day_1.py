@@ -28,3 +28,4 @@ def total_valid_prices(data):
 
 
     return total
+    

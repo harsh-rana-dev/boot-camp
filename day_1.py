@@ -1,7 +1,7 @@
 def group_price_by_ticker(data):
     grouped = {}
 
-    for item in data:
+    for item in data: 
         ticker = item.get("ticker")
         price = safe_price(item)
 
@@ -14,5 +14,3 @@ def group_price_by_ticker(data):
         grouped[ticker].append(price)
 
     return grouped
-
-

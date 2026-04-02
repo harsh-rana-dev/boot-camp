@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, MetaData, String, Integer, Column, Table, Float, ForeignKey
+from sqlalchemy import create_engine, MetaData, String, Integer, Column, Table, Float, ForeignKey, select
 
 engine = create_engine("postgresql://user:password@localhost/db", echo=True)
 
@@ -40,3 +40,15 @@ with engine.begin() as conn:
         {'owner': 4, 'des': 'something i dont know', 'value': 47556},
         {'owner': 5, 'des': 'something i dont know', 'value': 456874}
     ])
+
+    join_stmt = (
+        select(bots.c.name, things.c.des, things.c.value)
+        .join(things, bots.c.id == things.c.owner)
+        .where(things.c.value > 500)
+    )
+
+    result = conn.execute(join_stmt)
+
+    for row in result:
+        print(f"Bot: {row.name}, Value: {row.value}")
+

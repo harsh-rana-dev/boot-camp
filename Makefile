@@ -1,3 +1,5 @@
 run:
-	python day_1.py
+	python main.py
 	
+test:
+	pytest test_main.py

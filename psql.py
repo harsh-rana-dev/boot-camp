@@ -14,7 +14,11 @@ bots = Table(
 
 meta.create_all(engine)
 
-
 with engine.begin() as conn:
-    insert_stmt = bots.insert().values(name='milk', age=1)
-    conn.execute(insert_stmt)
+    update_stmt = (
+        bots.update()
+        .where(bots.c.name == 'milk')
+        .values(age=50)
+    )
+
+    result = conn.execute(update_stmt)

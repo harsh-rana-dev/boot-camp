@@ -1,5 +1,5 @@
 run:
-	python main.py
+	python rev.py
 	
-test:
-	pytest test_main.py
+run2:
+	python revpd.py

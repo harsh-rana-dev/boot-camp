@@ -1,5 +1,2 @@
 run:
-	python rev.py
-	
-run2:
-	python revpd.py
+	python newpd.py

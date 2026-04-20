@@ -1,2 +1,4 @@
 run:
-	python newpd.py
+	python day_1.py
+
+	

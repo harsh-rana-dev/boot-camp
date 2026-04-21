@@ -125,4 +125,3 @@ what is it doing explain
 select *
 from data
 where ticker is null or price is null;
-

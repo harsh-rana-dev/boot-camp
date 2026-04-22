@@ -1,23 +1,68 @@
-import pytest
+select ticker, count(*)
+from data
+group by ticker;
 
-@pytest.fixture
-def sample_data():
-    return [
-        {"ticker": "AAPL", "price": 100},
-        {"ticker": "AAPL", "price": 200},
-    ]
+select c.ticker
+from company c
+left join market m on c.ticker = m.ticker
+where m.ticker is null;
 
-def test_fix(sample_data):
-    result = avg_price(sample_data)
-    assert result["AAPL"] == 150
+select distinct on (ticker) *
+from data
+order by ticker, timestamp DESC;
 
-def test_normalize():
-    data = [
-        {"price": 100},
-        {"price": 200},
-    ]
+select *
+from (
+    select*,
+            row_number() over (partition by ticker order by timestamp DESC) as rn 
+    from data
+) t 
+where rn = 1;
 
-    result = normalize_prices(data)
+select 
+    ticker,
+    timestamp,
+    avg(price) over(
+        partition by ticker
+        order by timestamp
+        rows between 2 preceding and current row 
+    ) as moving_avg
 
-    assert result[0]["normalized"] == 0.0
-    assert result[1]["normalized"] == 1.0
+select 
+    ticker,
+    price,
+    case
+        when price > 100 then 'high'
+        when price > 50 then 'medium'
+        else 'low'
+    end as category
+from data;
+
+select *
+from data
+where price > (
+    select avg(price) from data
+);
+
+select * 
+from data d1
+where price = (
+    select max(price)
+    from data d2
+    where d1.ticker = d2.ticker
+)
+
+insert into data(tiker, price)
+values('aapl', 123)
+on conflict (ticker)
+do update set price = excluded.price;
+
+select ticker, count(*)
+from data
+group by ticker
+having count(*) > 1;
+
+select *
+from data
+where ticker is null or price is null;
+

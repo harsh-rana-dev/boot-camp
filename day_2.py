@@ -22,7 +22,7 @@ what dose normalized do and why
 
 
 
-for collections import defaultdict
+from collections import defaultdict
 
 def latest_avg_p(data):
     latest = {}

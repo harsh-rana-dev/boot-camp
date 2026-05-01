@@ -8,8 +8,9 @@ def clean_data(data):
         t = item.get("ticker")
         p = item.get("price")
 
-        if t or p is None or p <= 0:
-            contnue
+        if not t or p is None or p <= 0:
+            continue
+        
 
         cleaned.append(item)
 
@@ -25,14 +26,14 @@ def clean_data(data):
         totals[t] = totals.get(t, 0) + p 
         counts[t] = counts.get(t, 0) + 1 
 
-    return {t: totals[t] / count[t] for t in totals}
+    return {t: totals[t] / counts[t] for t in totals}
 
 
 
 select * 
 from (
     select *,
-            row_number() over (partition by ticker order by tiemstamp desc) as rn 
+            row_number() over (partition by ticker order by timestamp desc) as rn 
     from data
 ) t 
 where rn = 1;
@@ -46,17 +47,17 @@ def lates_ticker(data):
     result = {}
 
     for item in data:
-        t = item.get("ticker")
-        ts = item.get("tiemstamp")
+        t = item["ticker"]
+        ts = item["timestamp"]
 
-        if t not in result or ts > result[t]["tiemstamp"]:
+        if t not in result or ts > result[t]["timestamp"]:
             result[t] = item
 
     return list(result.values())
 
 
-select ticker, tiemstamp, price
-        sum(price) over (partition by ticker order by tiemstamp ) as running_total
+select ticker, timestamp, price,
+        sum(price) over (partition by ticker order by timestamp ) as running_total
 from data;
 
 
@@ -67,7 +68,7 @@ cleaned = clean_data(data)
 
 import pandas as pd 
 
-df = pd.DataFrame(cleaned):
+df = pd.DataFrame(cleaned)
 
 result = df.groupby("ticker")["price"].mean()
 
@@ -82,7 +83,8 @@ def avg_price(data):
 
     for item in data:
         if "price" not in item or item["price"] is None:
-            contnue
+            continue
+        
 
 
         total += item['price']

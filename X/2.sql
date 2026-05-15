@@ -91,6 +91,10 @@ HAVING
 
 👉 When is each executed?
 
+where filters the rows before groping and having dose it after the grouping and it also works with functions 
+
+
+
 2.
 
 What does:
@@ -100,6 +104,8 @@ PARTITION BY ticker
 actually do inside a window function?
 
 👉 How is it different from GROUP BY?
+
+i dont know 
 
 3.
 
@@ -111,6 +117,8 @@ inside ROW_NUMBER()?
 
 👉 What breaks if we remove it?
 
+i dont know
+
 4.
 
 What is the difference between:
@@ -121,17 +129,23 @@ DENSE_RANK()
 
 👉 When would you use each?
 
+i dont know
+
 5.
 
 What is a window function?
 
 👉 Why is it powerful in DataOps pipelines?
 
+i creates a loop over the function
+
 6.
 
 Why would you use LEFT JOIN instead of INNER JOIN?
 
 👉 Give a real DataOps example.
+
+to show the rows which dosent have any values
 
 7.
 
@@ -141,11 +155,15 @@ HAVING COUNT(*) > 1
 
 👉 Why is duplicate detection important?
 
+becomes duplicate records can caues very big issues in the fututre aggregations so its best to remove thme in the start 
+
 8.
 
 Why is SQL often preferred over Pandas for large aggregations?
 
 👉 What trade-offs exist?
+
+i dont know
 
 9.
 
@@ -153,8 +171,12 @@ How would you safely re-run ingestion jobs without creating duplicate rows?
 
 👉 Explain the SQL/DataOps strategy.
 
+with the help of sql upserts and on conflict INSERT
+
 10.
 
 If a SQL query becomes very slow in production:
 
 👉 what are 3 things you would check first?
+
+the table size then if im doing the whole function as once or not 
